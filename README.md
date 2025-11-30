@@ -51,7 +51,7 @@ To address the limitations of the Random Forest, each team member implemented an
 Overall, all three alternative approaches outperformed the optimized Random Forest on the test set. This suggests that models using gradient boosting, dimensionality reduction, or simpler linear structures may generalize better to high-dimensional single-cell RNAseq data.
 
 # Weekly Progress Report — Week 2 
-#------------------Hangwei's Part----------------------
+#------------------**Hangwei's Part**----------------------
 ##  1. Data Preprocessing Optimization
 To address the high dimensionality and sparsity (zero-inflation) issues encountered in Week 1, I implemented a robust preprocessing pipeline using **Scanpy**.
 
