@@ -77,20 +77,20 @@ The Scanpy preprocessing pipeline significantly improved the Random Forest and L
 #------------------**Ketong's Part**----------------------
 
 Building on last week's baseline models, I further developed an optimized XGBoost-based denoising pipeline. This approach integrates systematic noise reduction, significance-driven feature extraction, and strong regularization strategies.
-## 1.Feature Engineering: Constructing a Low-Noise, High-Information Feature Space
+## 1. Feature Engineering: Constructing a Low-Noise, High-Information Feature Space
 (1) Preprocessing: I applied a log(x + 1) transformation to stabilize variance in the raw expression matrix and performed L2 normalization on each cell to reduce scale differences caused by varying sequencing depth.
 
 (2) Significant Feature Selection (SelectKBest — ANOVA F-value): I used ANOVA F-scores to assess feature relevance for the classification task and selected K = 2000 highly informative genes as the main input features.
 
 (3) PCA for Noise Reduction: I applied PCA to the selected 2000 genes to extract stable latent components while suppressing stochastic noise, retaining the core biological signal for downstream modeling.
-## Model Construction & Parameter Optimization: XGBoost + Automated Grid Search
+## 2. Model Construction & Parameter Optimization: XGBoost + Automated Grid Search
 (1) Model Choice: XGBoost Classifier
 
 (2) Automated Hyperparameter Optimization (Grid Search / Random Search): Optimal Parameters: xgb__reg_alpha = 1.0, xgb__n_estimators = 500, xgb__max_depth = 3, xgb__learning_rate = 0.03, pca__n_components = 50, feature_select__k = 2000.
 
 (3) Training Strategy & Early Stopping: The dataset was split into 80% training and 20% fixed validation set for all hyperparameter combinations, and early stopping with 30 rounds was applied to prevent overfitting, with model selection guided by validation balanced accuracy.
 
-## Performance
+## 3. Performance
 | Metric                | Before Adjustment (Train 1.00, Valid 0.84) | After Adjustment (Train 0.92, Valid 0.81) | Improvement                                                             |
 | --------------------- | ------------------------------------------ | ----------------------------------------- | ----------------------------------------------------------------------- |
 | **Train Score**       | 1.00 ± 0.003                               | 0.92 ± 0.004                              | Training performance reduced — model no longer perfectly memorizes data |
