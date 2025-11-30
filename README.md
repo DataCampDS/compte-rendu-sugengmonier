@@ -49,3 +49,23 @@ To address the limitations of the Random Forest, each team member implemented an
 * Test accuracy: **0.741**
 
 Overall, all three alternative approaches outperformed the optimized Random Forest on the test set. This suggests that models using gradient boosting, dimensionality reduction, or simpler linear structures may generalize better to high-dimensional single-cell RNAseq data.
+
+# Weekly Progress Report — Week 2 
+#------------------Hangwei's Part----------------------
+##  1. Data Preprocessing Optimization
+To address the high dimensionality and sparsity (zero-inflation) issues encountered in Week 1, I implemented a robust preprocessing pipeline using **Scanpy**.
+
+** New Pipeline Steps:**
+1.  **Filtering:** Removed low-quality genes expressed in fewer than 3 cells.
+2.  **Normalization:** Normalized total counts per cell to 10,000 (CPM).
+3.  **Log Transformation:** Applied `log1p` to smooth the data distribution.
+4.  **Feature Selection :** Selected the top **2,000 Highly Variable Genes** by ranking their standardized variance.
+5.  **Scaling:** Applied `StandardScaler` to standardize features.
+
+## Results Comparison **
+The improved preprocessing pipeline significantly boosted model performance compared to Week 1.
+
+Model Strategy,Test Bal. Acc (Raw Data),Test Bal. Acc (Scanpy Optimized),Impact
+Random Forest,0.670,0.745,📈 +7.5% (Significant Improvement)
+Logistic Regression,0.722,0.750,📈 +2.8% (Moderate Improvement)
+XGBoost,0.828,0.822,➖ -0.6% (No Significant Change)
