@@ -62,10 +62,13 @@ To address the high dimensionality and sparsity (zero-inflation) issues encounte
 4.  **Feature Selection :** Selected the top **2,000 Highly Variable Genes** by ranking their standardized variance.
 5.  **Scaling:** Applied `StandardScaler` to standardize features.
 
-## Results Comparison **
-The improved preprocessing pipeline significantly boosted model performance compared to Week 1.
+## **Results Comparison Raw vs. Optimized Data**
 
-Model Strategy,Test Bal. Acc (Raw Data),Test Bal. Acc (Scanpy Optimized),Impact
-Random Forest,0.670,0.745,📈 +7.5% (Significant Improvement)
-Logistic Regression,0.722,0.750,📈 +2.8% (Moderate Improvement)
-XGBoost,0.828,0.822,➖ -0.6% (No Significant Change)
+| Model Strategy | Test Bal. Acc (Raw Data) | Test Bal. Acc (Optimized) | Impact |
+| :--- | :---: | :---: | :--- |
+| **Random Forest** | 0.670 | **0.745** |  **+7.5%** (Significant Improvement) |
+| **Logistic Regression** | 0.722 | **0.750** |  **+2.8%** (Improvement) |
+| **XGBoost** | **0.828** | 0.822 |  **-0.6%** (No Significant Change) |
+
+## **Result Interpretation**
+The Scanpy preprocessing pipeline significantly improved the Random Forest and Logistic Regression models by removing noise and standardizing the features. However, XGBoost performance remained stable because tree-based boosting algorithms are inherently robust to raw, sparse data and high dimensionality, requiring less preprocessing to achieve optimal results.
