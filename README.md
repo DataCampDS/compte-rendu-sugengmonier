@@ -68,7 +68,7 @@ To address the high dimensionality and sparsity (zero-inflation) issues encounte
 | :--- | :---: | :---: | :--- |
 | **Random Forest** | 0.670 | **0.745** |  **+7.5%** (Significant Improvement) |
 | **Logistic Regression** | 0.722 | **0.750** |  **+2.8%** (Improvement) |
-| **XGBoost** | **0.822** | 0.828 |  **+0.6%** (No Significant Change) |
+| **XGBoost** | 0.822 | **0.828** |  **+0.6%** (No Significant Change) |
 
 ## **Result Interpretation**
 The Scanpy preprocessing pipeline significantly improved the Random Forest and Logistic Regression models by removing noise and standardizing the features. However, XGBoost performance remained stable because tree-based boosting algorithms are inherently robust to raw, sparse data and high dimensionality, requiring less preprocessing to achieve optimal results.
