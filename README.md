@@ -100,3 +100,35 @@ Building on last week's baseline models, I further developed an optimized XGBoos
 
 The initial grid-search model performed strongly but showed clear overfitting.
 Further adjustments to learning rate and L1 regularization strength (reg_alpha) improved stability.
+
+# Weekly Progress Report — Week 3
+
+#------------------**Hangwei's Part**----------------------
+
+## XGBoost Optimization: Handling Imbalance & Overfitting
+
+Following the selection of XGBoost as the best baseline model in Week 2, this week I focused on fine-tuning the model to address significant class imbalance and overfitting issues observed during training.
+
+**Optimization Steps:**
+
+1. **Class Weighting (Handling Imbalance):**
+* Implemented a weighting strategy where weights are inversely proportional to class frequency: .
+* Injected `sample_weight` during training to penalize errors on rare classes (e.g., NK_cells).
+
+
+2. **Regularization (Treating Overfitting):**
+* Observed that weighting led to a Train Accuracy of **1.000** (Overfitting).
+* Applied constraints: Reduced **Learning Rate** (), added **L1/L2 penalties** (`reg_alpha=0.5`, `reg_lambda=2.0`), increased `min_child_weight` to 6, and set `subsample=0.7`.
+
+
+
+## **Results Comparison: Optimization Impact**
+
+| Model Strategy | Train Bal. Acc | Valid Bal. Acc | Test Bal. Acc | Observation |
+| --- | --- | --- | --- | --- |
+| **Initial Weighted XGBoost** | **1.000** (!!) | 0.83 | 0.81 | **Severe Overfitting** (Memorization) |
+| **Final Regularized XGBoost** | **0.970** | **0.85** | **0.81** | **Better Generalization** |
+
+## **Result Interpretation**
+
+The introduction of class weights improved the model's sensitivity to rare cell types but caused the model to memorize the training set perfectly (Train Acc = 1.0). By applying regularization, I successfully reduced the training accuracy to a realistic level (0.97) while improving the Validation Score from 0.83 to **0.85**. The final model achieves the best trade-off between bias and variance, maintaining high predictive power on unseen data without overfitting.
