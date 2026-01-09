@@ -126,7 +126,7 @@ Following the selection of XGBoost as the best baseline model in Week 2, this we
 
 | Model Strategy | Train Bal. Acc | Valid Bal. Acc | Test Bal. Acc | Observation |
 | --- | --- | --- | --- | --- |
-| **Initial Weighted XGBoost** | **1.000** (!!) | 0.83 | 0.81 | **Severe Overfitting** (Memorization) |
+| **Initial Weighted XGBoost** | **1.000** (!!) | 0.83 | 0.81 | **Overfitting**  |
 | **Final Regularized XGBoost** | **0.970** | **0.85** | **0.81** | **Better Generalization** |
 
 ## **Result Interpretation**
