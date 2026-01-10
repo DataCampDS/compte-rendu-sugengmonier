@@ -101,9 +101,64 @@ Building on last week's baseline models, I further developed an optimized XGBoos
 The initial grid-search model performed strongly but showed clear overfitting.
 Further adjustments to learning rate and L1 regularization strength (reg_alpha) improved stability.
 
+# ------------------ **Louis’s Part** ----------------------
+
+
+## 1. Exploration of Alternative Dimensionality Reduction Methods
+
+Following the limitations observed with **TruncatedSVD** during Week 1, I explored alternative dimensionality reduction strategies better suited to dense, normalized gene expression data.
+
+### **Principal Component Analysis**
+
+I applied PCA to the gene expression matrix in order to:
+- Capture the dominant sources of biological variance,
+- Reduce noise and redundant correlations between genes,
+- Mitigate the curse of dimensionality prior to model training.
+
+The PCA was configured to retain **90% of the total variance**, resulting in the following dimensionality reduction:
+
+- **Original dimension:** 14,059 genes  
+- **Reduced dimension:** **658 principal components**
+
+This approach preserves most of the biological signal while significantly reducing model complexity.
+
+## 2. Random Forest Optimization via Grid Search
+
+Using the PCA-transformed feature space, I implemented a **Grid Search** to optimize the Random Forest classifier.
+
+### **Hyperparameters Tuned**
+- `n_estimators`
+- `max_depth`
+- `max_features`
+- `min_samples_leaf`
+- `max_samples`
+
+### **Regularization Strategy**
+
+To counteract overfitting induced by high-dimensional data, the optimization emphasized:
+- Shallow trees (limited depth),
+- Strong regularization via larger minimum leaf sizes,
+- Feature subsampling to decorrelate trees.
+
+## 3. Handling Class Imbalance: Focus on NK Cells
+
+Given the strong imbalance between cell types—particularly the under-representation of **NK cells**—I explored strategies to improve minority-class recognition.
+
+### **Class Weighting Strategy**
+- Applied stronger misclassification penalties to NK cells using class-weighting mechanisms,
+- Reviewed documentation and best practices highlighting the importance of weighting strategies in ensemble methods for imbalanced biological datasets.
+
+## 4. Observations and Intermediate Results
+
+- PCA substantially stabilized Random Forest training by suppressing noise-driven splits.
+- Grid Search improved test performance compared to the baseline Random Forest.
+- Class weighting enhanced NK cell recall but introduced stronger overfitting tendencies, motivating further regularization in later stages.
+
+
+
 # Weekly Progress Report — Week 3
 
-#------------------**Hangwei's Part**----------------------
+# ------------------**Hangwei's Part**----------------------
 
 ## XGBoost Optimization: Handling Imbalance & Overfitting
 
@@ -132,6 +187,35 @@ Following the selection of XGBoost as the best baseline model in Week 2, this we
 ## **Result Interpretation**
 
 The introduction of class weights improved the model's sensitivity to rare cell types but caused the model to memorize the training set perfectly (Train Acc = 1.0). By applying regularization, I successfully reduced the training accuracy to a realistic level (0.97) while improving the Validation Score from 0.83 to **0.85**. The final model achieves the best trade-off between bias and variance, maintaining high predictive power on unseen data without overfitting.
+
+# ------------------ **Louis’s Part** ----------------------
+
+1. Understanding the Biological and Methodological Context
+
+During Week 3, I focused on consolidating the conceptual foundations of the project, with particular attention to:
+- The biological interpretation of cell-type classification in scRNA-seq data,
+- The role of gene expression patterns in defining cellular identity,
+- The challenges posed by high dimensionality, sparsity, and class imbalance.
+
+2. Literature Review and Reference Analysis
+
+I conducted a targeted review of scientific literature and documentation related to:
+- Gene expression–driven cell differentiation,
+- Ensemble and boosting methods applied to high-dimensional biological data,
+- Strategies for handling class imbalance in biomedical classification tasks.
+
+3. Report Writing and Synthesis
+
+Finally, I contributed to the writing and structuring of the final report by:
+- Ensuring coherence between biological motivation, methodology, and results,
+- Clearly discussing overfitting versus generalization,
+- Improving clarity, consistency, and reproducibility of the methodological descriptions.
+
+## Results
+- A more stable Random Forest baseline through principled dimensionality reduction,
+- A deeper understanding of the biological stakes underlying the classification task,
+- A clearer and more rigorous scientific narrative in the final report.
+
 
 # ------------------**Ketong's Part**----------------------
 
