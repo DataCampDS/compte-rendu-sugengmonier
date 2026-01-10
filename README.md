@@ -132,3 +132,74 @@ Following the selection of XGBoost as the best baseline model in Week 2, this we
 ## **Result Interpretation**
 
 The introduction of class weights improved the model's sensitivity to rare cell types but caused the model to memorize the training set perfectly (Train Acc = 1.0). By applying regularization, I successfully reduced the training accuracy to a realistic level (0.97) while improving the Validation Score from 0.83 to **0.85**. The final model achieves the best trade-off between bias and variance, maintaining high predictive power on unseen data without overfitting.
+
+# ------------------**Ketong's Part**----------------------
+
+## Alternative : Modèle hybride scVI-XGBoost
+
+### Motivation et contexte
+
+Précédemment, nous avons utilisé XGBoost basé sur les données d'expression génique brutes.  
+Même si la régularisation a réduit le surapprentissage, les données scRNA-seq présentent une haute dimension et des dépendances géniques complexes.
+
+**Proposition alternative :**
+- Introduction de **scVI (single-cell Variational Inference)**.
+- Projection des données dans un espace latent réduit, compact et débruité.
+- Utilisation de cet espace latent comme entrée pour XGBoost.
+
+## Méthodologie et architecture du modèle
+
+1. **Pré-sélection des caractéristiques**
+   - ANOVA (SelectKBest) pour retenir les $k=800$ ou $k=1000$ gènes les plus informatifs.
+   - Transformation $\log(1+x)$ pour stabiliser la variance.
+
+2. **Latent Representation Learning via scVI**
+   - **Encodeur :** projette le profil $k$-dimensionnel vers une distribution latente.
+   - **Espace latent :** dimension $n_{\text{latent}}=16$, filtrage du bruit.
+   - **Décodeur :** apprentissage guidé par la perte de reconstruction.
+
+3. **Classification hybride**
+   - Extraction des vecteurs latents $X_{\text{vae}}$.
+   - Entrée dans XGBoost pour la prédiction finale des types cellulaires.
+
+4. **Paramètres expérimentaux et optimisation**
+
+| scVI (VAE) | XGBoost |
+|------------|---------|
+| Dimension latent: 16 | n_estimators: 1000 |
+| max_epochs: 400 | learning_rate: 0.01 |
+| patience: 20 | max_depth: 4 |
+| 2 couches de 64 neurones | γ: 1.0 |
+
+## Résultats
+
+### Stabilité et surapprentissage
+
+- **Log Loss :** décroissance rapide → stabilisation → convergence sans surapprentissage.
+- **Précision :** Train ≈ Test → surapprentissage réduit → meilleure généralisation.
+
+### Comparaison des taux d'erreur
+
+- Baseline-Test et Best-Test se stabilisent à ~0,13-0,14.
+- Baseline-Train descend presque à 0 (surapprentissage sévère).
+- Best-Train ≈ 0,07 → écart réduit → contrôle du surapprentissage.
+
+### Confusion des types cellulaires
+
+- Amélioration de la reconnaissance des cellules T CD8+ (132 → 142).
+- Difficulté persistante à distinguer les cellules NK.
+
+### Tableau comparatif des performances finales
+
+| Métrique | HVGs + XGBoost | scVI + XGBoost |
+|----------|----------------|----------------|
+| Train Balanced Acc. | 0.97 | **0.90** |
+| Valid Balanced Acc. | 0.85 | **0.82** |
+| Test Balanced Acc. | 0.81 | **0.80** |
+
+**Conclusion :**
+- **scVI + XGBoost :** meilleur contrôle du surapprentissage grâce à la réduction de dimension, mais compression excessive peut perdre des caractéristiques fines (ex. cellules NK).  
+- **HVGs + XGBoost :** conserve plus de détails → meilleure distinction NK et T CD4+, mais surapprentissage plus marqué.
+
+
+
