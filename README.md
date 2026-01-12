@@ -1,3 +1,9 @@
+Notes finales :
+
+- Ketong : 15
+- Hangwei : 15.5
+- Louis : 15
+
 # suivi-datacamp
 # Weekly Progress — Week 1
 
